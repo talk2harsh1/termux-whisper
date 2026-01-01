@@ -45,14 +45,56 @@ MODEL_FILE="${MODELS_DIR}/ggml-${MODEL_NAME}.bin"
 THREADS=4
 
 # ==============================================================================
+# HELPER FUNCTIONS
+# ==============================================================================
+
+launch_file_picker() {
+    # Check if dialog is installed
+    if ! command -v dialog &> /dev/null;
+    then
+        echo -e "${YELLOW}[TIP]${NC} Install 'dialog' for a visual file picker: ${GREEN}pkg install dialog${NC}"
+        return
+    fi
+
+    # Default to /sdcard/Download if accessible, else /sdcard
+    local start_dir="/sdcard/"
+    [ -d "/sdcard/Download" ] && start_dir="/sdcard/Download/"
+
+    # Show file selection dialog
+    # 2> captures stderr (where dialog outputs the selection)
+    local selection
+    selection=$(dialog --stdout --title "Select Audio File or Folder" \
+        --fselect "$start_dir" 14 50)
+
+    # Clear screen after dialog
+    clear
+
+    # Check if user cancelled (empty selection)
+    if [ -z "$selection" ]; then
+        echo -e "${YELLOW}Selection cancelled.${NC}"
+        exit 0
+    fi
+    
+    echo "$selection"
+}
+
+# ==============================================================================
 # CHECKS
 # ==============================================================================
 
+# If no input provided, try to launch picker
 if [ -z "$INPUT_PATH" ]; then
-    echo -e "${BLUE}Usage:${NC} $0 <file_or_folder> [model_name] [--subs]"
-    echo -e "${YELLOW}Example:${NC} $0 /sdcard/Download/movie.mp4 --subs"
-    echo -e "${YELLOW}Example:${NC} $0 /sdcard/Download/ small --subs"
-    exit 1
+    INPUT_PATH=$(launch_file_picker)
+    
+    # If still empty (user cancelled or dialog missing), show usage
+    if [ -z "$INPUT_PATH" ]; then
+        echo -e "${BLUE}Usage:${NC} $0 <file_or_folder> [model_name] [--subs]"
+        echo -e "${YELLOW}Example:${NC} $0 /sdcard/Download/movie.mp4 --subs"
+        echo -e "${YELLOW}Example:${NC} $0 /sdcard/Download/ small --subs"
+        echo ""
+        echo -e "${GREEN}Tip:${NC} Run without arguments to use the visual file picker (requires 'dialog')."
+        exit 1
+    fi
 fi
 
 if [ ! -f "$WHISPER_EXEC" ]; then

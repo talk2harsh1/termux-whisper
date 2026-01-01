@@ -24,23 +24,24 @@ chmod +x *.sh
 
 **Transcribe:**
 ```bash
-./transcribe.sh <file_or_folder> [model_name] [--subs]
+./transcribe.sh [file_or_folder] [model_name] [--subs]
 ```
 
 **Examples:**
 ```bash
-# Basic transcription (outputs .txt)
+# Interactive Mode (Select file visually)
+./transcribe.sh
+
+# Manual Mode
 ./transcribe.sh /sdcard/Download/note.m4a
 
 # Generate Subtitles (.srt and .vtt)
 ./transcribe.sh /sdcard/Movies/video.mp4 --subs
-
-# Use specific model + subtitles
-./transcribe.sh /sdcard/Download/meeting.mp3 medium --subs
 ```
 
 ## ✨ Features
 - **Privacy:** 100% offline; data stays on your device.
+- **Interactive:** Visual file picker if no file is specified.
 - **Batch:** Transcribe single files or entire directories.
 - **Subtitles:** Optionally generate `.srt` and `.vtt` files.
 - **Formats:** Supports MP3, WAV, M4A, OPUS, OGG, FLAC, MP4, MKV.
