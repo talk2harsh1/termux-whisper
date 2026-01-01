@@ -16,7 +16,7 @@ echo -e "${BLUE}========================================${NC}"
 # 1. Update and Install Dependencies
 echo -e "\n${YELLOW}[1/4] Installing system dependencies...${NC}"
 pkg update -y
-pkg install -y git cmake clang ffmpeg wget dialog
+pkg install -y git cmake clang ffmpeg wget dialog termux-api
 
 # 2. Setup Storage
 echo -e "\n${YELLOW}[2/4] Setting up storage access...${NC}"

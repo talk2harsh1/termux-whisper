@@ -24,13 +24,16 @@ chmod +x *.sh
 
 **Transcribe:**
 ```bash
-./transcribe.sh [file_or_folder] [model_name] [--subs]
+./transcribe.sh [file_or_folder] [model_name] [--subs] [--native]
 ```
 
 **Examples:**
 ```bash
-# Interactive Mode (Select file visually)
+# Interactive Mode (Uses 'dialog' by default)
 ./transcribe.sh
+
+# Use Android System Picker (requires Termux:API app)
+./transcribe.sh --native
 
 # Manual Mode
 ./transcribe.sh /sdcard/Download/note.m4a
@@ -41,11 +44,15 @@ chmod +x *.sh
 
 ## ✨ Features
 - **Privacy:** 100% offline; data stays on your device.
-- **Interactive:** Visual file picker if no file is specified.
+- **Interactive:** Visual file picker (Dialog or Native Android).
 - **Batch:** Transcribe single files or entire directories.
 - **Subtitles:** Optionally generate `.srt` and `.vtt` files.
 - **Formats:** Supports MP3, WAV, M4A, OPUS, OGG, FLAC, MP4, MKV.
 - **Optimized:** Works best on modern Pixel and Snapdragon devices.
+
+## ⚠️ Notes on Pickers
+*   **Dialog (Default):** Browses files inside Termux. Saves transcripts **next to the original file**.
+*   **Native (`--native`):** Opens Android's system picker. Saves transcripts to `/sdcard/Download/Termux-Whisper/` because the original path is hidden from Termux. **Requires `Termux:API` app.**
 
 ---
 *Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
