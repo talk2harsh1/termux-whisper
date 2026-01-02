@@ -5,10 +5,17 @@ A lightweight wrapper for [whisper.cpp](https://github.com/ggerganov/whisper.cpp
 
 ## 🚀 Quick Start
 
-### 1. Install Termux
-Download from [F-Droid](https://f-droid.org/packages/com.termux/) (Recommended) or the Google Play Store.
+### 1. Install & Setup (One-Liner)
+Open Termux and paste this command:
+```bash
+curl -sL https://raw.githubusercontent.com/MuathAmer/termux-whisper/main/install.sh | bash
+```
+This will install all dependencies, fetch the engine, and compile it automatically.
 
-### 2. Setup
+---
+
+### 2. Manual Installation (Alternative)
+If you prefer to do it step-by-step:
 ```bash
 pkg install git -y
 git clone https://github.com/MuathAmer/termux-whisper.git
