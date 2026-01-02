@@ -41,6 +41,7 @@
 *   **Action:**
     1.  Always test the 'Discovery Path': Run the script without arguments to ensure new features are visible in the help menu.
     2.  Verify the "Definition of Done": Logic + Internal Help + External Docs + UI Menu.
+    3.  **The "Grep Check":** When renaming or moving files, search the entire codebase (including `.md` docs) for the old filename (`grep -r "filename" .`) to catch broken references.
 </PROTOCOL:VERIFY>
 
 <PROTOCOL:WORKFLOW>
