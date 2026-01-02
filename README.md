@@ -19,8 +19,9 @@ chmod +x *.sh
 
 ### 3. Usage
 **The easy way (Recommended):**
+Restart Termux, then type:
 ```bash
-./menu.sh
+whisper
 ```
 This launches the Unified Dashboard where you can pick files, record audio, and manage models.
 

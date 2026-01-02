@@ -48,9 +48,25 @@ cmake -B build
 cmake --build build -j --config Release
 
 if [ $? -eq 0 ]; then
+    # 5. Create Alias
+    echo -e "\n${YELLOW}[5/5] Creating shortcut...${NC}"
+    
+    # Resolve absolute path to menu.sh
+    PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    MENU_SCRIPT="${PROJECT_DIR}/menu.sh"
+    BASHRC="$HOME/.bashrc"
+    
+    # Check if alias exists
+    if grep -q "alias whisper=" "$BASHRC" 2>/dev/null; then
+        echo "Shortcut 'whisper' already exists."
+    else
+        echo "alias whisper=\"bash '$MENU_SCRIPT'\"" >> "$BASHRC"
+        echo "Added 'whisper' alias to ~/.bashrc"
+    fi
+
     echo -e "\n${GREEN}[SUCCESS] Installation Complete!${NC}"
-    echo -e "Run ${YELLOW}./models.sh${NC} to download a model."
-    echo -e "Run ${YELLOW}./transcribe.sh${NC} to start transcribing."
+    echo -e "Restart Termux, then type ${YELLOW}whisper${NC} to start."
+    echo -e "Or run manually: ${YELLOW}./menu.sh${NC}"
 else
     echo -e "\n${RED}[ERROR] Compilation failed.${NC}"
 fi
