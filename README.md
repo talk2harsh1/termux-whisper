@@ -37,6 +37,7 @@ This launches the Unified Dashboard where you can pick files, record audio, and 
 ## ✨ Features
 - **One-Click Dashboard:** A professional TUI menu to access all features.
 - **Live Recording:** Dictate directly into Termux and get instant transcription.
+- **Share to Transcribe:** Share audio files from WhatsApp or File Manager directly to Termux.
 - **Privacy:** 100% offline; data stays on your device.
 - **Smart:** Auto-detects audio formats (including OPUS/OGG) and checks for audio streams.
 - **Interactive:** Visual file picker via Android System (`--file-picker`) or Terminal (`--tui-file-picker`).

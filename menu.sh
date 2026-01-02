@@ -25,13 +25,14 @@ main_menu() {
                            --title " Main Menu " \
                            --clear \
                            --cancel-label "Exit" \
-                           --menu "Select an action:" 15 50 6 \
+                           --menu "Select an action:" 16 50 7 \
                            1 "Transcribe File (System Picker)" \
                            2 "Record & Transcribe (Live)" \
                            3 "Browse Files (TUI Picker)" \
                            4 "Manage Models" \
-                           5 "Quick Settings" \
-                           6 "Help / About" \
+                           5 "Enable Share Integration" \
+                           6 "Quick Settings" \
+                           7 "Help / About" \
                            2>&1 1>&3)
         exit_code=$?
         exec 3>&-
@@ -46,8 +47,9 @@ main_menu() {
             2) bash "$TRANS_SCRIPT" --record ;; 
             3) bash "$TRANS_SCRIPT" --tui-file-picker ;; 
             4) bash "$MODELS_SCRIPT" ;; 
-            5) settings_menu ;; 
-            6) show_help ;; 
+            5) bash "${SCRIPT_DIR}/enable_share.sh" ;;
+            6) settings_menu ;; 
+            7) show_help ;; 
         esac
     done
 }
