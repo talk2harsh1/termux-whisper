@@ -239,7 +239,9 @@ transcribe_file() {
     fi
 
     # Run Whisper
-    "$WHISPER_EXEC" "${cmd_args[@]}" > /dev/null 2>&1
+    # We do NOT silence stdout/stderr so the user can see progress (timestamps/segments)
+    echo -e "${BLUE}[INFO]${NC} Transcribing... (Live output below)"
+    "$WHISPER_EXEC" "${cmd_args[@]}" 
 
     # Cleanup
     rm "$temp_wav"
