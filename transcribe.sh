@@ -39,7 +39,6 @@ GENERATE_SUBS=false
 USE_NATIVE_PICKER=false
 USE_DIALOG_PICKER=false
 
-# Simple loop to handle positional args and flags
 while [[ $# -gt 0 ]]; do
   case $1 in
     --subs)
@@ -96,7 +95,6 @@ trap cleanup EXIT INT TERM
 # CHECKS & INPUT HANDLING
 # ==============================================================================
 
-# 1. If no input file provided, try to pick one
 if [ -z "$INPUT_PATH" ]; then
 
     # CASE A: Native Android Picker requested
@@ -215,7 +213,6 @@ if [ -z "$INPUT_PATH" ]; then
     fi
 fi
 
-# 2. Check Requirements
 if [ ! -f "$WHISPER_EXEC" ]; then
     echo -e "${RED}[ERROR]${NC} Engine not built. Run ./setup.sh first."
     exit 1
