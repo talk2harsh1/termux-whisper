@@ -79,7 +79,7 @@ if [ -z "$INPUT_PATH" ]; then
         echo ""
         echo -e "${BLUE}[INFO]${NC} Opening system file picker via 'termux-storage-get'..."
         # Create a unique base filename
-        local base_tmp="import_$(date +%s)"
+        base_tmp="import_$(date +%s)"
         INPUT_PATH="${base_tmp}.tmp"
         
         # Execute termux-storage-get to pull file content into INPUT_PATH
@@ -99,7 +99,7 @@ if [ -z "$INPUT_PATH" ]; then
             echo -e "${BLUE}[INFO]${NC} Detecting file format..."
             
             # Use ffprobe to detect format and check for audio streams
-            local format_info=$(ffprobe -v error -show_entries format=format_name -select_streams a -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
+            format_info=$(ffprobe -v error -show_entries format=format_name -select_streams a -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
             
             if [ -z "$format_info" ]; then
                 echo -e "${RED}[ERROR]${NC} The selected file is not a valid audio or video file."
@@ -108,15 +108,15 @@ if [ -z "$INPUT_PATH" ]; then
             fi
 
             # Extract first format name (ffprobe sometimes returns "mov,mp4,m4a...")
-            local raw_fmt=$(echo "$format_info" | head -n 1 | cut -d',' -f1)
+            raw_fmt=$(echo "$format_info" | head -n 1 | cut -d',' -f1)
             
             # Mapping common ffprobe format names to extensions
-            local ext="$raw_fmt"
+            ext="$raw_fmt"
             [[ "$raw_fmt" == "matroska" ]] && ext="mkv"
             [[ "$raw_fmt" == "mov" ]] && ext="m4a" # common for m4a
             
             # Validate extension
-            local is_supported=false
+            is_supported=false
             for s_ext in $SUPPORTED_EXTS; do
                 if [[ "$ext" == "$s_ext" || "$raw_fmt" == *"$s_ext"* ]]; then
                     is_supported=true
@@ -132,7 +132,7 @@ if [ -z "$INPUT_PATH" ]; then
             fi
 
             # Rename to preserve extension
-            local new_path="${base_tmp}.${ext}"
+            new_path="${base_tmp}.${ext}"
             mv "$INPUT_PATH" "$new_path"
             INPUT_PATH="$new_path"
             
