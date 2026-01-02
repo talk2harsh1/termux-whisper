@@ -98,15 +98,20 @@ if [ -z "$INPUT_PATH" ]; then
         else
             echo -e "${BLUE}[INFO]${NC} Detecting file format..."
             
-            # Use ffprobe to detect format and check for audio streams
-            format_info=$(ffprobe -v error -show_entries format=format_name -select_streams a -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
+            # 1. Check for audio stream
+            # We explicitly ask only for the stream type of audio streams.
+            local has_audio=$(ffprobe -v error -select_streams a -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
             
-            if [ -z "$format_info" ]; then
-                echo -e "${RED}[ERROR]${NC} The selected file is not a valid audio or video file."
+            if [[ "$has_audio" != *"audio"* ]]; then
+                echo -e "${RED}[ERROR]${NC} The selected file does not contain a valid audio stream."
                 rm -f "$INPUT_PATH"
                 exit 1
             fi
 
+            # 2. Get container format
+            # We separately ask for the format name.
+            local format_info=$(ffprobe -v error -show_entries format=format_name -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
+            
             # Extract first format name (ffprobe sometimes returns "mov,mp4,m4a...")
             raw_fmt=$(echo "$format_info" | head -n 1 | cut -d',' -f1)
             
