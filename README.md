@@ -61,3 +61,6 @@ This launches the Unified Dashboard where you can pick files, record audio, and 
 
 ---
 *Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
+
+## 🌟 See Also
+Check out [**Termux Bootstrap**](https://github.com/MuathAmer/termux-bootstrap) – A modular, safe, and mobile-optimized script to transform Termux into a powerful development environment. It includes this project as a community extra!
