@@ -38,11 +38,16 @@ MODEL_NAME="small"
 GENERATE_SUBS=false
 USE_NATIVE_PICKER=false
 USE_DIALOG_PICKER=false
+DO_RECORD=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --subs)
       GENERATE_SUBS=true
+      shift # past argument
+      ;;
+    --record)
+      DO_RECORD=true
       shift # past argument
       ;;
     --file-picker)
@@ -94,6 +99,56 @@ trap cleanup EXIT INT TERM
 # ==============================================================================
 # CHECKS & INPUT HANDLING
 # ==============================================================================
+
+# CASE 0: Live Recording
+if [ "$DO_RECORD" = true ]; then
+    if ! command -v termux-microphone-record &> /dev/null; then
+         echo -e "${RED}[ERROR]${NC} 'Termux:API' not installed or not found."
+         echo "Run 'pkg install termux-api' and install the Termux:API app."
+         exit 1
+    fi
+
+    echo -e "${BLUE}[INFO]${NC} Initializing microphone..."
+    
+    # Create temp file for raw recording
+    REC_FILE=$(mktemp --suffix=.m4a)
+    TEMP_FILES+=("$REC_FILE")
+    
+    # Start Recording
+    IS_RECORDING=true
+    termux-microphone-record -f "$REC_FILE" -l 0 &>/dev/null &
+    REC_PID=$!
+    
+    # Check if process died immediately (indicating API failure)
+    sleep 1
+    if ! kill -0 "$REC_PID" 2>/dev/null; then
+        echo -e "${RED}[ERROR]${NC} Recording process failed to start."
+        echo "This usually means 'Termux:API' app is missing or not granted permissions."
+        echo "Note: The Google Play version of Termux is deprecated and incompatible with Termux:API."
+        echo "Please switch to F-Droid versions of both apps."
+        rm -f "$REC_FILE"
+        exit 1
+    fi
+
+    echo -e "${RED}[REC] 🔴 Recording...${NC}"
+    echo "Press ${YELLOW}[ENTER]${NC} to stop recording."
+    read -r dump
+    
+    # Stop Recording
+    termux-microphone-record -q &>/dev/null
+    wait "$REC_PID" 2>/dev/null
+    IS_RECORDING=false
+    
+    echo -e "${GREEN}[DONE]${NC} Recording captured."
+    
+    # Check if empty
+    if [ ! -s "$REC_FILE" ]; then
+        echo -e "${RED}[ERROR]${NC} Recording failed or file is empty."
+        exit 1
+    fi
+    
+    INPUT_PATH="$REC_FILE"
+fi
 
 if [ -z "$INPUT_PATH" ]; then
 
