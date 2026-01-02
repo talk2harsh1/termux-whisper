@@ -76,6 +76,7 @@ if [ -z "$INPUT_PATH" ]; then
              exit 1
         fi
         
+        echo ""
         echo -e "${BLUE}[INFO]${NC} Opening system file picker via 'termux-storage-get'..."
         # Create a unique base filename
         local base_tmp="import_$(date +%s)"
@@ -87,6 +88,7 @@ if [ -z "$INPUT_PATH" ]; then
         
         echo -e "${YELLOW}[ACTION]${NC} Please select a file in the Android picker that appeared."
         read -p "Press [Enter] once you have selected the file... "
+        echo ""
 
         # Check if file was actually created/not empty
         if [ ! -s "$INPUT_PATH" ]; then
@@ -210,12 +212,14 @@ transcribe_file() {
         local timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
         output_base="${dl_dir}/Transcript_${timestamp}_${MODEL_NAME}"
         
+        echo ""
         echo -e "${BLUE}[INFO]${NC} Native Picker used. Saving to: ${YELLOW}${dl_dir}/${NC}"
     else
         # Standard behavior: Save next to original file
         output_base="${dir_path}/${filename_no_ext}_TRANSCRIPT"
     fi
 
+    echo ""
     echo -e "${YELLOW}[BUSY]${NC} Processing: $filename"
 
     # Convert
@@ -240,8 +244,11 @@ transcribe_file() {
 
     # Run Whisper
     # We do NOT silence stdout/stderr so the user can see progress (timestamps/segments)
+    echo ""
     echo -e "${BLUE}[INFO]${NC} Transcribing... (Live output below)"
+    echo "----------------------------------------"
     "$WHISPER_EXEC" "${cmd_args[@]}" 
+    echo "----------------------------------------"
 
     # Cleanup
     rm "$temp_wav"
@@ -251,6 +258,7 @@ transcribe_file() {
         rm "$input_file"
     fi
     
+    echo ""
     echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.txt"
 
     # OPEN FILE PROMPT
