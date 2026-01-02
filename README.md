@@ -25,16 +25,16 @@ chmod +x *.sh
 
 **Transcribe:**
 ```bash
-./transcribe.sh [file_or_folder] [--model model_name] [--subs] [--native | --dialog]
+./transcribe.sh [file_or_folder] [--model model_name] [--subs] [--file-picker | --tui-file-picker]
 ```
 
 **Examples:**
 ```bash
 # Use Android System Picker (Recommended)
-./transcribe.sh --native
+./transcribe.sh --file-picker
 
 # Use Terminal File Browser (requires 'pkg install dialog')
-./transcribe.sh --dialog
+./transcribe.sh --tui-file-picker
 
 # Manual Mode (Direct file path)
 ./transcribe.sh /sdcard/Download/note.m4a --model base
@@ -46,7 +46,7 @@ chmod +x *.sh
 ## ✨ Features
 - **Privacy:** 100% offline; data stays on your device.
 - **Smart:** Auto-detects audio formats (including OPUS/OGG) and checks for audio streams.
-- **Interactive:** Visual file picker via Android System (`--native`) or Terminal (`--dialog`).
+- **Interactive:** Visual file picker via Android System (`--file-picker`) or Terminal (`--tui-file-picker`).
 - **Live Progress:** Real-time feedback showing transcription segments and timestamps.
 - **Convenient:** Prompts to open the transcript immediately after processing.
 - **Batch:** Transcribe single files or entire directories.
@@ -54,8 +54,8 @@ chmod +x *.sh
 - **Formats:** Supports MP3, WAV, M4A, OPUS, OGG, FLAC, MP4, MKV, AVI, MOV.
 
 ## ⚠️ Notes on Pickers
-*   **Native (`--native`):** Opens Android's system file picker. Automatically handles file importing and format detection. Saves transcripts to `/sdcard/Download/Termux-Whisper/`. **Requires `Termux:API` app.**
-*   **Dialog (`--dialog`):** Browses files inside Termux using a text-based UI. Saves transcripts **next to the original file**. Requires `pkg install dialog`.
+*   **Native (`--file-picker`):** Opens Android's system file picker. Automatically handles file importing and format detection. Saves transcripts to `/sdcard/Download/Termux-Whisper/`. **Requires `Termux:API` app.**
+*   **Dialog (`--tui-file-picker`):** Browses files inside Termux using a text-based UI. Saves transcripts **next to the original file**. Requires `pkg install dialog`.
 
 ---
 *Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
