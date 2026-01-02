@@ -45,12 +45,12 @@ while [[ $# -gt 0 ]]; do
       GENERATE_SUBS=true
       shift # past argument
       ;;
-    --native)
-      USE_NATIVE_PICKER=true
+    --file-picker)
+      USE_SYS_PICKER=true
       shift # past argument
       ;;
-    --dialog)
-      USE_DIALOG_PICKER=true
+    --tui-file-picker)
+      USE_TUI_PICKER=true
       shift # past argument
       ;;
     --model|-m)
