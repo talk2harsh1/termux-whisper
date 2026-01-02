@@ -59,8 +59,8 @@ This launches the Unified Dashboard where you can pick files, record audio, and 
 *   **Native (`--file-picker`):** Opens Android's system file picker. Automatically handles file importing and format detection. Saves transcripts to `/sdcard/Download/Termux-Whisper/`. **Requires `Termux:API` app.**
 *   **Dialog (`--tui-file-picker`):** Browses files inside Termux using a text-based UI. Saves transcripts **next to the original file**. Requires `pkg install dialog`.
 
----
-*Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
-
 ## 🌟 See Also
 Check out [**Termux Bootstrap**](https://github.com/MuathAmer/termux-bootstrap) – A modular, safe, and mobile-optimized script to transform Termux into a powerful development environment. It includes this project as a community extra!
+
+---
+*Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
