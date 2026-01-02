@@ -10,6 +10,7 @@ Download from [F-Droid](https://f-droid.org/packages/com.termux/) (Recommended) 
 
 ### 2. Setup
 ```bash
+pkg install git -y
 git clone https://github.com/MuathAmer/termux-whisper.git
 cd termux-whisper
 chmod +x *.sh
