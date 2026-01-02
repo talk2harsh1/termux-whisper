@@ -8,6 +8,9 @@
 WHISPER_EXEC="./whisper.cpp/build/bin/whisper-cli"
 MODELS_DIR="./whisper.cpp/models"
 
+# Supported formats
+SUPPORTED_EXTS="opus mp3 wav m4a flac ogg aac mp4 mkv avi mov"
+
 # Colors
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; BLUE='\033[0;34m'; NC='\033[0m'
 
@@ -74,8 +77,9 @@ if [ -z "$INPUT_PATH" ]; then
         fi
         
         echo -e "${BLUE}[INFO]${NC} Opening system file picker via 'termux-storage-get'..."
-        # Create a unique temp filename to store the imported content
-        INPUT_PATH="import_$(date +%s).tmp"
+        # Create a unique base filename
+        local base_tmp="import_$(date +%s)"
+        INPUT_PATH="${base_tmp}.tmp"
         
         # Execute termux-storage-get to pull file content into INPUT_PATH
         # Note: This is asynchronous on some devices/API levels, so we must wait.
@@ -90,7 +94,47 @@ if [ -z "$INPUT_PATH" ]; then
             rm -f "$INPUT_PATH"
             INPUT_PATH=""
         else
-            echo -e "${GREEN}[SUCCESS]${NC} File imported successfully."
+            echo -e "${BLUE}[INFO]${NC} Detecting file format..."
+            
+            # Use ffprobe to detect format and check for audio streams
+            local format_info=$(ffprobe -v error -show_entries format=format_name -select_streams a -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "$INPUT_PATH" 2>/dev/null)
+            
+            if [ -z "$format_info" ]; then
+                echo -e "${RED}[ERROR]${NC} The selected file is not a valid audio or video file."
+                rm -f "$INPUT_PATH"
+                exit 1
+            fi
+
+            # Extract first format name (ffprobe sometimes returns "mov,mp4,m4a...")
+            local raw_fmt=$(echo "$format_info" | head -n 1 | cut -d',' -f1)
+            
+            # Mapping common ffprobe format names to extensions
+            local ext="$raw_fmt"
+            [[ "$raw_fmt" == "matroska" ]] && ext="mkv"
+            [[ "$raw_fmt" == "mov" ]] && ext="m4a" # common for m4a
+            
+            # Validate extension
+            local is_supported=false
+            for s_ext in $SUPPORTED_EXTS; do
+                if [[ "$ext" == "$s_ext" || "$raw_fmt" == *"$s_ext"* ]]; then
+                    is_supported=true
+                    ext="$s_ext"
+                    break
+                fi
+            done
+
+            if [ "$is_supported" = false ]; then
+                echo -e "${RED}[ERROR]${NC} Unsupported format: $raw_fmt"
+                rm -f "$INPUT_PATH"
+                exit 1
+            fi
+
+            # Rename to preserve extension
+            local new_path="${base_tmp}.${ext}"
+            mv "$INPUT_PATH" "$new_path"
+            INPUT_PATH="$new_path"
+            
+            echo -e "${GREEN}[SUCCESS]${NC} File imported: ${ext^^} format detected."
         fi
 
     # CASE B: Interactive TUI (Dialog) - Only if explicitly requested
@@ -213,7 +257,14 @@ if [ -f "$INPUT_PATH" ]; then
 elif [ -d "$INPUT_PATH" ]; then
     echo -e "${BLUE}Batch processing directory...${NC}"
     shopt -s nocaseglob nullglob
-    for f in "$INPUT_PATH"/*.{opus,mp3,wav,m4a,flac,ogg,aac,mp4,mkv,avi,mov}; do
+    
+    # Construct glob from supported extensions
+    pattern_list=""
+    for ext in $SUPPORTED_EXTS; do
+        pattern_list+="$INPUT_PATH/*.$ext "
+    done
+    
+    for f in $pattern_list; do
         transcribe_file "$f"
     done
 else
