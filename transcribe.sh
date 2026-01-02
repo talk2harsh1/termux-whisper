@@ -14,8 +14,20 @@ MODELS_DIR="${SCRIPT_DIR}/whisper.cpp/models"
 # Supported formats
 SUPPORTED_EXTS="opus mp3 wav m4a flac ogg aac mp4 mkv avi mov"
 
-# Colors
-GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; BLUE='\033[0;34m'; NC='\033[0m'
+# Colors (Safe definition)
+if [ -t 1 ]; then
+    GREEN=$(tput setaf 2)
+    YELLOW=$(tput setaf 3)
+    RED=$(tput setaf 1)
+    BLUE=$(tput setaf 4)
+    NC=$(tput sgr0)
+else
+    GREEN=""
+    YELLOW=""
+    RED=""
+    BLUE=""
+    NC=""
+fi
 
 # ==============================================================================
 # ARGUMENT PARSING
