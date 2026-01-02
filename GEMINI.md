@@ -5,8 +5,8 @@
 
 ## 🟢 Current Status
 *   **Phase:** Initial Release
-*   **Last Update:** 2026-01-01
-*   **Focus:** providing a "One-Click" experience for Android users.
+*   **Last Update:** 2026-01-02
+*   **Focus:** providing a "One-Click" experience for Android users with smart format detection, live progress tracking, and interactive file pickers.
 
 ## 📚 Documentation Architecture
 1.  **`README.md`:** User-facing guide. Public.
@@ -33,8 +33,9 @@
 </PROTOCOL:ACT>
 
 <PROTOCOL:WORKFLOW>
-*   **Objective:** Git Best Practices.
+*   **Objective:** Git & Documentation Best Practices.
 *   **Action:**
     1.  Automatically create a commit (following conventional commits) as soon as a complete change is made.
     2.  Automatically push changes to the remote repository immediately after committing.
+    3.  Always maintain synchronized updates across all sources (code, README.md, and GEMINI.md) for every new feature or change.
 </PROTOCOL:WORKFLOW>
