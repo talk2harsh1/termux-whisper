@@ -2,7 +2,7 @@
 
 # Termux Whisper Bootstrap Installer
 # This script is meant to be run via:
-# curl -sL https://raw.githubusercontent.com/MuathAmer/termux-whisper/main/install.sh | bash
+# curl -sL https://raw.githubusercontent.com/itsmuaaz/termux-whisper/main/install.sh | bash
 
 set -e
 
@@ -24,7 +24,7 @@ if [ -d "$TARGET_DIR" ]; then
     git pull
 else
     echo "Cloning Termux Whisper to $TARGET_DIR..."
-    git clone https://github.com/MuathAmer/termux-whisper.git "$TARGET_DIR"
+    git clone https://github.com/itsmuaaz/termux-whisper.git "$TARGET_DIR"
     cd "$TARGET_DIR"
 fi
 

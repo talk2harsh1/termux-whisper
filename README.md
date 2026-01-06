@@ -8,7 +8,7 @@ A lightweight wrapper for [whisper.cpp](https://github.com/ggerganov/whisper.cpp
 ### 1. Install & Setup (One-Liner)
 Open Termux and paste this command:
 ```bash
-curl -sL https://raw.githubusercontent.com/MuathAmer/termux-whisper/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/itsmuaaz/termux-whisper/main/install.sh | bash
 ```
 This will install all dependencies, fetch the engine, and compile it automatically.
 
@@ -18,7 +18,7 @@ This will install all dependencies, fetch the engine, and compile it automatical
 If you prefer to do it step-by-step:
 ```bash
 pkg install git -y
-git clone https://github.com/MuathAmer/termux-whisper.git
+git clone https://github.com/itsmuaaz/termux-whisper.git
 cd termux-whisper
 chmod +x core/*.sh menu.sh
 ./core/setup.sh
@@ -60,7 +60,7 @@ This launches the Unified Dashboard where you can pick files, record audio, and 
 *   **Dialog (`--tui-file-picker`):** Browses files inside Termux using a text-based UI. Saves transcripts **next to the original file**. Requires `pkg install dialog`.
 
 ## 🌟 See Also
-Check out [**Termux Bootstrap**](https://github.com/MuathAmer/termux-bootstrap) – A modular, safe, and mobile-optimized script to transform Termux into a powerful development environment. It includes this project as a community extra!
+Check out [**Termux Bootstrap**](https://github.com/itsmuaaz/termux-bootstrap) – A modular, safe, and mobile-optimized script to transform Termux into a powerful development environment. It includes this project as a community extra!
 
 ---
 *Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp)*
