@@ -44,7 +44,7 @@ This launches the Unified Dashboard where you can pick files and manage models.
 
 ## ✨ Features
 - **One-Click Dashboard:** A professional TUI menu to access all features.
-- **Share to Transcribe:** Share audio files from WhatsApp or File Manager directly to Termux.
+- **Share to Transcribe:** Automatically enabled. Share audio files from WhatsApp or File Manager directly to Termux.
 - **Privacy:** 100% offline; data stays on your device.
 - **Smart:** Auto-detects audio formats (including OPUS/OGG) and checks for audio streams.
 - **Native Picker:** Visual file picker via Android System (`--file-picker`).

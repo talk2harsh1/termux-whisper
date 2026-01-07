@@ -6,7 +6,6 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TRANS_SCRIPT="${SCRIPT_DIR}/core/transcribe.sh"
 MODELS_SCRIPT="${SCRIPT_DIR}/core/models.sh"
-SHARE_SCRIPT="${SCRIPT_DIR}/core/enable_share.sh"
 CONFIG_FILE="$HOME/.termux_whisper_config"
 
 # Colors
@@ -33,9 +32,8 @@ print_menu() {
     echo -e "\n${YELLOW}Choose an action:${NC}"
     echo -e "  ${GREEN}1)${NC} Transcribe File (System Picker)"
     echo -e "  ${GREEN}2)${NC} Manage Models"
-    echo -e "  ${GREEN}3)${NC} Enable Share Integration"
-    echo -e "  ${GREEN}4)${NC} Quick Settings"
-    echo -e "  ${GREEN}5)${NC} Help / About"
+    echo -e "  ${GREEN}3)${NC} Quick Settings"
+    echo -e "  ${GREEN}4)${NC} Help / About"
     echo -e "  ${RED}q)${NC} Exit"
     echo ""
 }
@@ -103,9 +101,8 @@ while true; do
     case $selection in
         1) bash "$TRANS_SCRIPT" --file-picker ;; 
         2) bash "$MODELS_SCRIPT" ;; 
-        3) bash "$SHARE_SCRIPT" ;;
-        4) settings_menu ;; 
-        5) show_help ;;
+        3) settings_menu ;; 
+        4) show_help ;;
         q|Q) 
             echo "Bye!"
             exit 0 
