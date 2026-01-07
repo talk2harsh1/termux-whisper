@@ -208,8 +208,35 @@ if [ ! -f "$WHISPER_EXEC" ]; then
 fi
 
 if [ ! -f "$MODEL_FILE" ]; then
-    echo -e "${RED}[ERROR]${NC} Model '${MODEL_NAME}' not found. Run ./models.sh"
-    exit 1
+    echo -e "${YELLOW}[WARN]${NC} Model '${MODEL_NAME}' not found."
+    read -p "Download it now? (y/n): " confirm_dl
+    
+    if [[ "$confirm_dl" =~ ^[Yy]$ ]]; then
+        echo -e "${BLUE}[INFO]${NC} Downloading model..."
+        
+        # Save current dir to return later (though script exits soon, good practice)
+        PUSH_DIR=$(pwd)
+        cd "${MODELS_DIR}" || exit 1
+        
+        # Download
+        if bash download-ggml-model.sh "$MODEL_NAME"; then
+            echo -e "${GREEN}[SUCCESS]${NC} Download complete."
+        else
+            echo -e "${RED}[ERROR]${NC} Download failed."
+            cd "$PUSH_DIR"
+            exit 1
+        fi
+        cd "$PUSH_DIR"
+        
+        # Re-check
+        if [ ! -f "$MODEL_FILE" ]; then
+             echo -e "${RED}[ERROR]${NC} Model file still missing after download."
+             exit 1
+        fi
+    else
+        echo -e "${RED}[ERROR]${NC} Cannot proceed without model."
+        exit 1
+    fi
 fi
 
 # ==============================================================================
