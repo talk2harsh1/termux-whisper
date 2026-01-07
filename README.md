@@ -25,22 +25,24 @@ chmod +x core/*.sh menu.sh
 ```
 
 ### 3. Usage
-**The easy way (Recommended):**
-Restart Termux, then type:
+**Interactive Dashboard:**
+Restart Termux, then simply type:
 ```bash
 whisper
 ```
-This launches the Unified Dashboard where you can pick files and manage models.
 
----
+**CLI Commands:**
+You can also use the `whisper` command directly with arguments:
 
-**Manual Commands:**
-| Feature | Command |
+| Goal | Command |
 | :--- | :--- |
-| **Launch Dashboard** | `./menu.sh` |
-| **Transcribe (Picker)** | `./core/transcribe.sh --file-picker` |
-| **Transcribe (File)** | `./core/transcribe.sh /path/to/file` |
-| **Manage Models** | `./core/models.sh` |
+| **Transcribe File** | `whisper video.mp4` |
+| **Specify Model** | `whisper voice.m4a --model base` |
+| **Generate Subtitles** | `whisper movie.mkv --subs` |
+| **Batch Process** | `whisper /path/to/folder/` |
+| **Direct File Picker** | `whisper --file-picker` |
+
+*Available Models:* `tiny`, `base`, `small`, `medium`, `large-v3-turbo`
 
 ## ✨ Features
 - **One-Click Dashboard:** A professional TUI menu to access all features.

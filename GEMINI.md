@@ -8,9 +8,10 @@
 *   **Last Update:** 2026-01-07
 *   **Focus:** Stability, Usability, Mobile Integration, Multi-shell Support, and CLI UX Refactor.
 *   **Recent Changes:** 
-    *   Removed "Dictation Mode" and "TUI Picker" to simplify the project flow.
-    *   **Share Integration:** Now enabled automatically by `setup.sh`. Added toggle in Quick Settings.
-    *   **UI Overhaul:** Removed `dialog` dependency. Standardized all menus to text-based UI with clear page separation.
+    *   **CLI Support:** The `whisper` command now accepts arguments (e.g., `whisper file.mp3 --model base`) for direct execution, bypassing the menu.
+    *   **Share Integration:** Enabled by default with a toggle in Quick Settings.
+    *   **UI Overhaul:** Standardized text-based UI, removed `dialog`.
+    *   **Model Manager:** Added Download/Delete toggle.
 
 ## 📚 Documentation Architecture
 1.  **`README.md`:** User-facing guide. Public.
@@ -18,8 +19,7 @@
 3.  **`menu.sh`:** The main entry point (Dashboard).
 4.  **`core/setup.sh`:** The builder. Handles dependencies and compilation.
 5.  **`core/models.sh`:** Model management menu.
-6.  **`core/transcribe.sh`:** The main execution wrapper. Supports --record.
-7.  **`core/enable_share.sh`:** Android Share menu integration script.
+6.  **`core/transcribe.sh`:** The main execution wrapper. Handles file processing and ffmpeg conversion.
 
 ## 🛡️ Gated Protocols
 

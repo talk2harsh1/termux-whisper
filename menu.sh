@@ -21,6 +21,13 @@ if [ ! -f "$CONFIG_FILE" ]; then
 fi
 source "$CONFIG_FILE"
 
+# DIRECT EXECUTION MODE
+# If arguments are provided (e.g. "whisper file.mp3"), bypass the menu
+if [ $# -gt 0 ]; then
+    bash "$TRANS_SCRIPT" "$@"
+    exit $?
+fi
+
 print_header() {
     clear
     echo -e "${BLUE}========================================${NC}"
