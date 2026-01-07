@@ -171,8 +171,8 @@ show_help() {
 }
 
 # Main Loop
-print_header
 while true; do
+    print_header
     print_menu
     read -p "Select option: " selection
     
