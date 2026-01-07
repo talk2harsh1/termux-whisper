@@ -39,6 +39,7 @@ You can also use the `whisper` command directly with arguments:
 | **Transcribe File** | `whisper video.mp4` |
 | **Specify Model** | `whisper voice.m4a --model base` |
 | **Generate Subtitles** | `whisper movie.mkv --subs` |
+| **Generate Lyrics** | `whisper song.mp3 --lrc` |
 | **Batch Process** | `whisper /path/to/folder/` |
 | **Direct File Picker** | `whisper --file-picker` |
 
@@ -54,6 +55,7 @@ You can also use the `whisper` command directly with arguments:
 - **Convenient:** Prompts to open the transcript immediately after processing.
 - **Batch:** Transcribe single files or entire directories.
 - **Subtitles:** Optionally generate `.srt` and `.vtt` files.
+- **Lyrics:** Generate `.lrc` files for synced music lyrics.
 - **Formats:** Supports MP3, WAV, M4A, OPUS, OGG, FLAC, MP4, MKV, AVI, MOV.
 
 ## ⚠️ Notes

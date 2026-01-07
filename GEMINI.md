@@ -12,6 +12,7 @@
     *   **Share Integration:** Enabled by default with a toggle in Quick Settings.
     *   **UI Overhaul:** Standardized text-based UI, removed `dialog`.
     *   **Model Manager:** Added Download/Delete toggle.
+    *   **Subtitles & Lyrics:** Added toggles for generating `.srt`, `.vtt` and `.lrc` (Karaoke) files.
 
 ## 📚 Documentation Architecture
 1.  **`README.md`:** User-facing guide. Public.

@@ -30,12 +30,6 @@ else
     NC=""
 fi
 
-# Load User Configuration
-CONFIG_FILE="$HOME/.termux_whisper_config"
-if [ -f "$CONFIG_FILE" ]; then
-    source "$CONFIG_FILE"
-fi
-
 # ==============================================================================
 # ARGUMENT PARSING
 # ==============================================================================
@@ -43,12 +37,23 @@ fi
 INPUT_PATH=""
 MODEL_NAME="small"
 GENERATE_SUBS=false
+GENERATE_LRC=false
 USE_SYS_PICKER=false
+
+# Load User Configuration (Overrides defaults)
+CONFIG_FILE="$HOME/.termux_whisper_config"
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+fi
 
 while [[ $# -gt 0 ]]; do
   case $1 in
     --subs)
       GENERATE_SUBS=true
+      shift # past argument
+      ;;
+    --lrc)
+      GENERATE_LRC=true
       shift # past argument
       ;;
     --file-picker)
@@ -362,6 +367,10 @@ transcribe_file() {
         cmd_args+=("-osrt" "-ovtt")
     fi
 
+    if [ "$GENERATE_LRC" = true ]; then
+        cmd_args+=("-olrc")
+    fi
+
     # Run Whisper
     # We do NOT silence stdout/stderr so the user can see progress (timestamps/segments)
     echo ""
@@ -377,6 +386,9 @@ transcribe_file() {
     if [ "$GENERATE_SUBS" = true ]; then
         echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.srt"
         echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.vtt"
+    fi
+    if [ "$GENERATE_LRC" = true ]; then
+        echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.lrc"
     fi
 
     # POST-TRANSCRIPTION ACTIONS

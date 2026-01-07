@@ -69,6 +69,56 @@ set_language() {
     read -p "Press Enter to return..." dummy
 }
 
+toggle_subs() {
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}       Generate Subtitles               ${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    
+    # Toggle logic
+    if [ "$GENERATE_SUBS" = "true" ]; then
+        NEW_VAL="false"
+        echo -e "${YELLOW}Subtitles Disabled.${NC}"
+    else
+        NEW_VAL="true"
+        echo -e "${GREEN}Subtitles Enabled (.srt & .vtt).${NC}"
+    fi
+
+    # Update Config
+    if grep -q "GENERATE_SUBS=" "$CONFIG_FILE"; then
+        sed -i "s/GENERATE_SUBS=.*/GENERATE_SUBS=$NEW_VAL/" "$CONFIG_FILE"
+    else
+        echo "GENERATE_SUBS=$NEW_VAL" >> "$CONFIG_FILE"
+    fi
+    
+    read -p "Press Enter to return..." dummy
+}
+
+toggle_lrc() {
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}       Generate LRC (Karaoke)           ${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    
+    # Toggle logic
+    if [ "$GENERATE_LRC" = "true" ]; then
+        NEW_VAL="false"
+        echo -e "${YELLOW}LRC Generation Disabled.${NC}"
+    else
+        NEW_VAL="true"
+        echo -e "${GREEN}LRC Generation Enabled.${NC}"
+    fi
+
+    # Update Config
+    if grep -q "GENERATE_LRC=" "$CONFIG_FILE"; then
+        sed -i "s/GENERATE_LRC=.*/GENERATE_LRC=$NEW_VAL/" "$CONFIG_FILE"
+    else
+        echo "GENERATE_LRC=$NEW_VAL" >> "$CONFIG_FILE"
+    fi
+    
+    read -p "Press Enter to return..." dummy
+}
+
 toggle_share() {
     local TERMUX_BIN="$HOME/bin"
     local HOOK_FILE="$TERMUX_BIN/termux-file-editor"
@@ -133,21 +183,39 @@ settings_menu() {
             SHARE_STATUS="${GREEN}Enabled${NC}"
         fi
 
+        # Check Subs Status
+        local SUBS_STATUS="${RED}Disabled${NC}"
+        if [ "$GENERATE_SUBS" = "true" ]; then
+            SUBS_STATUS="${GREEN}Enabled${NC}"
+        fi
+
+        # Check LRC Status
+        local LRC_STATUS="${RED}Disabled${NC}"
+        if [ "$GENERATE_LRC" = "true" ]; then
+            LRC_STATUS="${GREEN}Enabled${NC}"
+        fi
+
         clear
         echo -e "${BLUE}========================================${NC}"
         echo -e "${BLUE}           Quick Settings               ${NC}"
         echo -e "${BLUE}========================================${NC}"
         echo -e "  1) Set Default Language [Current: ${DEFAULT_LANG}]"
-        echo -e "  2) Android Share Integration [$SHARE_STATUS]"
+        echo -e "  2) Generate Subtitles [$SUBS_STATUS]"
+        echo -e "     ${YELLOW}(Creates .srt and .vtt files along with transcript)${NC}"
+        echo -e "  3) Generate LRC (Karaoke) [$LRC_STATUS]"
+        echo -e "     ${YELLOW}(Creates .lrc files for synced music lyrics)${NC}"
+        echo -e "  4) Android Share Integration [$SHARE_STATUS]"
         echo -e "     ${YELLOW}(Allows sharing audio directly to Termux from other apps)${NC}"
-        echo -e "  3) View Config File"
+        echo -e "  5) View Config File"
         echo -e "  b) Back"
         echo ""
         read -p "Select: " opt
         case $opt in
             1) set_language ;;
-            2) toggle_share ;;
-            3) 
+            2) toggle_subs ;;
+            3) toggle_lrc ;;
+            4) toggle_share ;;
+            5) 
                 clear
                 echo -e "${BLUE}========================================${NC}"
                 echo -e "${BLUE}           Config File                  ${NC}"
