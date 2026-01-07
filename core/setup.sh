@@ -121,6 +121,7 @@ EOF
 
     echo -e "\n${GREEN}[SUCCESS] Setup Complete!${NC}"
     echo -e "Run: ${YELLOW}whisper${NC}"
+    echo -e "Tip: You can now share audio files directly to 'Termux' to transcribe them!"
 else
     echo -e "\n${RED}[ERROR] Compilation failed.${NC}"
     exit 1
