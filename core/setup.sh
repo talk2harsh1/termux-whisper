@@ -26,7 +26,7 @@ echo -e "${BLUE}========================================${NC}"
 # 1. Install Dependencies
 echo -e "\n${YELLOW}[1/4] Checking dependencies...${NC}"
 # We avoid 'pkg update' to be faster/idempotent. User should update their own system.
-pkg install -y git cmake clang ffmpeg wget dialog termux-api
+pkg install -y git cmake clang ffmpeg wget termux-api
 
 # 2. Setup Storage
 echo -e "\n${YELLOW}[2/4] Setting up storage access...${NC}"

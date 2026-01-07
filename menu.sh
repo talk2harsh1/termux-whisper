@@ -40,7 +40,10 @@ print_menu() {
 }
 
 set_language() {
-    echo -e "\n${BLUE}--- Set Default Language ---${NC}"
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}       Set Default Language             ${NC}"
+    echo -e "${BLUE}========================================${NC}"
     echo "Current: ${DEFAULT_LANG}"
     echo "Enter language code (e.g., 'en', 'es', 'fr', 'auto'):"
     read -p "> " lang_input
@@ -64,7 +67,10 @@ toggle_share() {
     local HOOK_FILE="$TERMUX_BIN/termux-file-editor"
     local DISABLED_HOOK="$TERMUX_BIN/termux-file-editor.disabled"
 
-    echo -e "\n${BLUE}--- Android Share Integration ---${NC}"
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}    Android Share Integration           ${NC}"
+    echo -e "${BLUE}========================================${NC}"
 
     # Check current status
     if [ -f "$HOOK_FILE" ] && grep -q "Termux Whisper" "$HOOK_FILE"; then
@@ -120,7 +126,10 @@ settings_menu() {
             SHARE_STATUS="${GREEN}Enabled${NC}"
         fi
 
-        echo -e "\n${BLUE}--- Quick Settings ---${NC}"
+        clear
+        echo -e "${BLUE}========================================${NC}"
+        echo -e "${BLUE}           Quick Settings               ${NC}"
+        echo -e "${BLUE}========================================${NC}"
         echo -e "  1) Set Default Language [Current: ${DEFAULT_LANG}]"
         echo -e "  2) Android Share Integration [$SHARE_STATUS]"
         echo -e "     ${YELLOW}(Allows sharing audio directly to Termux from other apps)${NC}"
@@ -132,9 +141,13 @@ settings_menu() {
             1) set_language ;;
             2) toggle_share ;;
             3) 
-                echo -e "\n${YELLOW}--- $CONFIG_FILE ---${NC}"
+                clear
+                echo -e "${BLUE}========================================${NC}"
+                echo -e "${BLUE}           Config File                  ${NC}"
+                echo -e "${BLUE}========================================${NC}"
+                echo -e "${YELLOW}$CONFIG_FILE${NC}"
                 cat "$CONFIG_FILE"
-                echo -e "${YELLOW}--------------------------${NC}"
+                echo ""
                 read -p "Press Enter to return..." dummy
                 ;;
             b|B) return ;;
@@ -144,7 +157,10 @@ settings_menu() {
 }
 
 show_help() {
-    echo -e "\n${BLUE}--- About Termux Whisper ---${NC}"
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}      About Termux Whisper              ${NC}"
+    echo -e "${BLUE}========================================${NC}"
     echo "A high-performance wrapper for whisper.cpp."
     echo ""
     echo -e "${YELLOW}Transcripts saved to:${NC}"

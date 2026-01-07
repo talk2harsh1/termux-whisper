@@ -218,70 +218,64 @@ fi
 
 show_post_actions() {
     local out_file="$1"
-    
-    # Dependencies check
-    local has_dialog=$(command -v dialog)
     local has_open=$(command -v termux-open)
     local has_clip=$(command -v termux-clipboard-set)
     local has_share=$(command -v termux-share)
 
-    # Fallback if dialog is missing
-    if [ -z "$has_dialog" ]; then
-        if [ -n "$has_open" ]; then
-            echo ""
-            read -p "Open transcript? (y/N): " choice
-            [[ "$choice" =~ ^[Yy]$ ]] && termux-open "$out_file"
-        fi
-        return
-    fi
-
-    # Interactive Loop
     while true; do
-        exec 3>&1
-        selection=$(dialog --title "Transcription Complete" \
-                           --clear \
-                           --cancel-label "Exit" \
-                           --menu "File: $(basename "$out_file")" 12 50 4 \
-                           1 "Open File" \
-                           2 "Copy to Clipboard" \
-                           3 "Share File" \
-                           4 "Main Menu / Exit" \
-                           2>&1 1>&3)
-        exit_code=$?
-        exec 3>&-
-
-        # Handle Exit/Cancel
-        if [ $exit_code -ne 0 ] || [ "$selection" == "4" ]; then
-            break
-        fi
+        clear
+        echo -e "${BLUE}========================================${NC}"
+        echo -e "${BLUE}       Transcription Complete           ${NC}"
+        echo -e "${BLUE}========================================${NC}"
+        echo -e "File: ${YELLOW}$(basename "$out_file")${NC}"
+        echo ""
+        echo -e "${YELLOW}Actions:${NC}"
+        echo -e "  ${GREEN}1)${NC} Open Transcript"
+        echo -e "  ${GREEN}2)${NC} Copy to Clipboard"
+        echo -e "  ${GREEN}3)${NC} Share Transcript"
+        echo -e "  ${GREEN}4)${NC} Main Menu / Exit"
+        echo ""
+        read -p "Select option: " selection
 
         case $selection in
             1) 
                 if [ -n "$has_open" ]; then
                     termux-open "$out_file"
+                    echo -e "${GREEN}Opened.${NC}"
                 else
-                    dialog --msgbox "Error: 'termux-open' not found." 6 40
+                    echo -e "${RED}Error: 'termux-open' not found.${NC}"
+                    read -p "Press Enter..."
                 fi
                 ;;
-            2) 
+            2)
                 if [ -n "$has_clip" ]; then
                     cat "$out_file" | termux-clipboard-set
-                    dialog --msgbox "Copied to clipboard!" 6 30
+                    echo -e "${GREEN}Copied to clipboard!${NC}"
+                    read -p "Press Enter..."
                 else
-                    dialog --msgbox "Error: Termux:API not installed." 6 40
+                    echo -e "${RED}Error: Termux:API not installed.${NC}"
+                    read -p "Press Enter..."
                 fi
                 ;;
-            3) 
+            3)
                 if [ -n "$has_share" ]; then
                     termux-share -a send "$out_file"
+                    echo -e "${GREEN}Sharing...${NC}"
                 else
-                    dialog --msgbox "Error: Termux:API not installed." 6 40
+                    echo -e "${RED}Error: Termux:API not installed.${NC}"
+                    read -p "Press Enter..."
                 fi
+                ;;
+            4)
+                break
+                ;;
+            *)
+                echo -e "${RED}Invalid selection.${NC}"
+                read -p "Press Enter..."
                 ;;
         esac
     done
 }
-
 transcribe_file() {
     local input_file="$1"
     local interactive="${2:-true}"

@@ -9,7 +9,8 @@
 *   **Focus:** Stability, Usability, Mobile Integration, Multi-shell Support, and CLI UX Refactor.
 *   **Recent Changes:** 
     *   Removed "Dictation Mode" and "TUI Picker" to simplify the project flow.
-    *   **Share Integration:** Now enabled automatically by `setup.sh`. Removed manual "Enable Share" option from menu.
+    *   **Share Integration:** Now enabled automatically by `setup.sh`. Added toggle in Quick Settings.
+    *   **UI Overhaul:** Removed `dialog` dependency. Standardized all menus to text-based UI with clear page separation.
 
 ## 📚 Documentation Architecture
 1.  **`README.md`:** User-facing guide. Public.
