@@ -45,6 +45,13 @@ You can also use the `whisper` command directly with arguments:
 
 *Available Models:* `tiny`, `base`, `small`, `medium`, `large-v3-turbo`
 
+### 4. Interactive Pre-Flight
+When you run Whisper (via menu or Share), you will see a **20-second "Pre-Flight" dashboard**.
+- Shows your current target, model, and output settings.
+- Allows you to toggle Subtitles/Lyrics or change the model **for this run only**.
+- Press **Enter** to start immediately.
+- **Note:** Using specific CLI flags (e.g., `--subs`) skips this check for faster automation.
+
 ## ✨ Features
 - **One-Click Dashboard:** A professional TUI menu to access all features.
 - **Share to Transcribe:** Automatically enabled. Share audio files from WhatsApp or File Manager directly to Termux.

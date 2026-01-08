@@ -9,6 +9,7 @@
 *   **Focus:** Stability, Usability, Mobile Integration, Multi-shell Support, and CLI UX Refactor.
 *   **Recent Changes:** 
     *   **CLI Support:** The `whisper` command now accepts arguments (e.g., `whisper file.mp3 --model base`) for direct execution, bypassing the menu.
+    *   **Pre-Flight Check:** Added a 20-second interactive dashboard before transcription starts (unless skipped via CLI flags).
     *   **Share Integration:** Enabled by default with a toggle in Quick Settings.
     *   **UI Overhaul:** Standardized text-based UI, removed `dialog`.
     *   **Model Manager:** Added Download/Delete toggle.

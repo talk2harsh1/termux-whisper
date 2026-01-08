@@ -39,6 +39,7 @@ MODEL_NAME="small"
 GENERATE_SUBS=false
 GENERATE_LRC=false
 USE_SYS_PICKER=false
+CLI_OVERRIDE=false
 
 # Load User Configuration (Overrides defaults)
 CONFIG_FILE="$HOME/.termux_whisper_config"
@@ -50,10 +51,22 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --subs)
       GENERATE_SUBS=true
+      CLI_OVERRIDE=true
+      shift # past argument
+      ;;
+    --no-subs)
+      GENERATE_SUBS=false
+      CLI_OVERRIDE=true
       shift # past argument
       ;;
     --lrc)
       GENERATE_LRC=true
+      CLI_OVERRIDE=true
+      shift # past argument
+      ;;
+    --no-lrc)
+      GENERATE_LRC=false
+      CLI_OVERRIDE=true
       shift # past argument
       ;;
     --file-picker)
@@ -62,6 +75,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     --model|-m)
       MODEL_NAME="$2"
+      CLI_OVERRIDE=true
       shift 2 # past argument and value
       ;;
     -*)
@@ -396,6 +410,120 @@ transcribe_file() {
         show_post_actions "${output_base}.txt"
     fi
 }
+
+# ==============================================================================
+# PRE-FLIGHT CHECK
+# ==============================================================================
+
+ensure_model_exists() {
+    local m_name="$1"
+    local m_file="${MODELS_DIR}/ggml-${m_name}.bin"
+    
+    if [ ! -f "$m_file" ]; then
+        echo -e "${YELLOW}[WARN]${NC} Model '${m_name}' not found."
+        read -p "Download now? (y/n): " dl_choice
+        if [[ "$dl_choice" =~ ^[Yy]$ ]]; then
+            echo -e "${BLUE}Downloading...${NC}"
+            PUSH_DIR=$(pwd)
+            cd "${MODELS_DIR}" || return 1
+            if bash download-ggml-model.sh "$m_name"; then
+                echo -e "${GREEN}Success.${NC}"
+            else
+                echo -e "${RED}Failed.${NC}"
+                cd "$PUSH_DIR"
+                return 1
+            fi
+            cd "$PUSH_DIR"
+        else
+            return 1
+        fi
+    fi
+    return 0
+}
+
+pre_flight_check() {
+    # Don't check if running non-interactively (e.g. forced via flag)
+    if [ "$CLI_OVERRIDE" = true ]; then return; fi
+
+    local timer=20
+    while [ $timer -gt 0 ]; do
+        clear
+        echo -e "${BLUE}========================================${NC}"
+        echo -e "${BLUE}       Transcription Preparation        ${NC}"
+        echo -e "${BLUE}========================================${NC}"
+        
+        # Display Info
+        if [ -d "$INPUT_PATH" ]; then
+            local count=$(ls -1 "$INPUT_PATH" | wc -l)
+            echo -e "Target:  ${YELLOW}[Folder] $INPUT_PATH ($count files)${NC}"
+        else
+            echo -e "Target:  ${YELLOW}$(basename "$INPUT_PATH")${NC}"
+        fi
+        
+        echo -e "Model:   ${GREEN}$MODEL_NAME${NC}"
+        
+        # Subs Status
+        if [ "$GENERATE_SUBS" = true ]; then S_STAT="${GREEN}ON${NC}"; else S_STAT="${RED}OFF${NC}"; fi
+        echo -e "Subs:    $S_STAT"
+        
+        # LRC Status
+        if [ "$GENERATE_LRC" = true ]; then L_STAT="${GREEN}ON${NC}"; else L_STAT="${RED}OFF${NC}"; fi
+        echo -e "Lyrics:  $L_STAT"
+        
+        echo -e "----------------------------------------"
+        echo -e "[Enter]  Start Now"
+        echo -e "[S]      Toggle Subtitles"
+        echo -e "[L]      Toggle Lyrics"
+        echo -e "[M]      Change Model"
+        echo -e "[Q]      Cancel"
+        echo ""
+        echo -e "${YELLOW}Auto-starting in $timer seconds...${NC}"
+
+        # Non-blocking read
+        read -t 1 -n 1 key
+        if [ $? -eq 0 ]; then
+            case "$key" in
+                s|S) 
+                    if [ "$GENERATE_SUBS" = true ]; then GENERATE_SUBS=false; else GENERATE_SUBS=true; fi 
+                    ;;
+                l|L) 
+                    if [ "$GENERATE_LRC" = true ]; then GENERATE_LRC=false; else GENERATE_LRC=true; fi 
+                    ;;
+                m|M)
+                    echo ""
+                    read -p "Enter model name (tiny/base/small/medium/large): " new_model
+                    if [ -n "$new_model" ]; then
+                        if ensure_model_exists "$new_model"; then
+                            MODEL_NAME="$new_model"
+                            MODEL_FILE="${MODELS_DIR}/ggml-${MODEL_NAME}.bin"
+                        else
+                            echo "Reverting to previous model."
+                            sleep 1
+                        fi
+                    fi
+                    ;;
+                q|Q) 
+                    echo "Cancelled."
+                    exit 0 
+                    ;;
+                "") 
+                    break ;; # Enter key
+            esac
+            # Reset timer on interaction to give more time? 
+            # Or keep counting down? User said "Prompt at beginning", usually static.
+            # Let's reset to 20 if they interact to prevent panic.
+            timer=20 
+        else
+            ((timer--))
+        fi
+    done
+    clear
+}
+
+# Run Pre-Flight Check if we have valid input
+if [[ -f "$INPUT_PATH" || -d "$INPUT_PATH" ]]; then
+    pre_flight_check
+fi
 
 if [ -f "$INPUT_PATH" ]; then
     transcribe_file "$INPUT_PATH" true
