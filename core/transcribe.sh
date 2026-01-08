@@ -47,8 +47,30 @@ if [ -f "$CONFIG_FILE" ]; then
     source "$CONFIG_FILE"
 fi
 
+show_usage() {
+    echo -e "${BLUE}Usage:${NC} whisper [file_or_folder] [options]"
+    echo ""
+    echo "Options:"
+    echo -e "  -h, --help          Show this help message"
+    echo -e "  --model, -m [name]  Choose model (tiny, base, small, medium, large)"
+    echo -e "  --subs              Generate .srt and .vtt subtitles"
+    echo -e "  --no-subs           Disable subtitle generation (overrides config)"
+    echo -e "  --lrc               Generate .lrc lyrics"
+    echo -e "  --no-lrc            Disable lyrics generation (overrides config)"
+    echo -e "  --file-picker       Launch Android System File Picker"
+    echo ""
+    echo -e "${YELLOW}Examples:${NC}"
+    echo -e "  whisper song.mp3 --lrc --model small"
+    echo -e "  whisper video.mp4 --subs"
+    echo -e "  whisper folder/ --no-subs"
+    exit 0
+}
+
 while [[ $# -gt 0 ]]; do
   case $1 in
+    -h|--help)
+      show_usage
+      ;;
     --subs)
       GENERATE_SUBS=true
       CLI_OVERRIDE=true
