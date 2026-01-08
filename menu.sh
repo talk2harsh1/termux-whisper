@@ -40,7 +40,7 @@ print_menu() {
     echo -e "\n${YELLOW}Choose an action:${NC}"
     echo -e "  ${GREEN}1)${NC} Transcribe File (System Picker)"
     echo -e "  ${GREEN}2)${NC} Manage Models"
-    echo -e "  ${GREEN}3)${NC} Quick Settings"
+    echo -e "  ${GREEN}3)${NC} Global Preferences"
     echo -e "  ${GREEN}4)${NC} Help / About"
     echo -e "  ${RED}q)${NC} Exit"
     echo ""
@@ -66,6 +66,31 @@ set_language() {
     else
         echo -e "${YELLOW}Cancelled.${NC}"
     fi
+    read -p "Press Enter to return..." dummy
+}
+
+toggle_txt() {
+    clear
+    echo -e "${BLUE}========================================${NC}"
+    echo -e "${BLUE}       Generate Text Transcript         ${NC}"
+    echo -e "${BLUE}========================================${NC}"
+    
+    # Toggle logic (Defaults to true if missing)
+    if [ "$GENERATE_TXT" = "false" ]; then
+        NEW_VAL="true"
+        echo -e "${GREEN}Text Transcript Enabled.${NC}"
+    else
+        NEW_VAL="false"
+        echo -e "${YELLOW}Text Transcript Disabled.${NC}"
+    fi
+
+    # Update Config
+    if grep -q "GENERATE_TXT=" "$CONFIG_FILE"; then
+        sed -i "s/GENERATE_TXT=.*/GENERATE_TXT=$NEW_VAL/" "$CONFIG_FILE"
+    else
+        echo "GENERATE_TXT=$NEW_VAL" >> "$CONFIG_FILE"
+    fi
+    
     read -p "Press Enter to return..." dummy
 }
 
@@ -183,39 +208,36 @@ settings_menu() {
             SHARE_STATUS="${GREEN}Enabled${NC}"
         fi
 
-        # Check Subs Status
-        local SUBS_STATUS="${RED}Disabled${NC}"
-        if [ "$GENERATE_SUBS" = "true" ]; then
-            SUBS_STATUS="${GREEN}Enabled${NC}"
-        fi
+        # Check Output Statuses
+        local TXT_STATUS="${GREEN}Enabled${NC}"
+        if [ "$GENERATE_TXT" = "false" ]; then TXT_STATUS="${RED}Disabled${NC}"; fi
 
-        # Check LRC Status
+        local SUBS_STATUS="${RED}Disabled${NC}"
+        if [ "$GENERATE_SUBS" = "true" ]; then SUBS_STATUS="${GREEN}Enabled${NC}"; fi
+
         local LRC_STATUS="${RED}Disabled${NC}"
-        if [ "$GENERATE_LRC" = "true" ]; then
-            LRC_STATUS="${GREEN}Enabled${NC}"
-        fi
+        if [ "$GENERATE_LRC" = "true" ]; then LRC_STATUS="${GREEN}Enabled${NC}"; fi
 
         clear
         echo -e "${BLUE}========================================${NC}"
-        echo -e "${BLUE}           Quick Settings               ${NC}"
+        echo -e "${BLUE}         Global Preferences             ${NC}"
         echo -e "${BLUE}========================================${NC}"
         echo -e "  1) Set Default Language [Current: ${DEFAULT_LANG}]"
-        echo -e "  2) Generate Subtitles [$SUBS_STATUS]"
-        echo -e "     ${YELLOW}(Creates .srt and .vtt files along with transcript)${NC}"
-        echo -e "  3) Generate LRC (Karaoke) [$LRC_STATUS]"
-        echo -e "     ${YELLOW}(Creates .lrc files for synced music lyrics)${NC}"
-        echo -e "  4) Android Share Integration [$SHARE_STATUS]"
-        echo -e "     ${YELLOW}(Allows sharing audio directly to Termux from other apps)${NC}"
-        echo -e "  5) View Config File"
+        echo -e "  2) Generate Text Transcript [$TXT_STATUS]"
+        echo -e "  3) Generate Subtitles [$SUBS_STATUS]"
+        echo -e "  4) Generate LRC (Karaoke) [$LRC_STATUS]"
+        echo -e "  5) Android Share Integration [$SHARE_STATUS]"
+        echo -e "  6) View Config File"
         echo -e "  b) Back"
         echo ""
         read -p "Select: " opt
         case $opt in
             1) set_language ;;
-            2) toggle_subs ;;
-            3) toggle_lrc ;;
-            4) toggle_share ;;
-            5) 
+            2) toggle_txt ;;
+            3) toggle_subs ;;
+            4) toggle_lrc ;;
+            5) toggle_share ;;
+            6) 
                 clear
                 echo -e "${BLUE}========================================${NC}"
                 echo -e "${BLUE}           Config File                  ${NC}"

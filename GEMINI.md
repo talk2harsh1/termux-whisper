@@ -10,7 +10,9 @@
 *   **Recent Changes:** 
     *   **CLI Support:** The `whisper` command now accepts arguments (e.g., `whisper file.mp3 --model base`) for direct execution, bypassing the menu.
     *   **Pre-Flight Check:** Added a 20-second interactive dashboard before transcription starts (unless skipped via CLI flags).
-    *   **Share Integration:** Enabled by default with a toggle in Quick Settings.
+    *   **Global Preferences:** Renamed "Quick Settings" to clarify they persist across sessions. Added toggles for Text, Subs, and LRC output.
+    *   **--no-txt:** Added support for disabling text transcripts via CLI and Config.
+    *   **Share Integration:** Enabled by default with a toggle in Global Preferences.
     *   **UI Overhaul:** Standardized text-based UI, removed `dialog`.
     *   **Model Manager:** Added Download/Delete toggle.
     *   **Subtitles & Lyrics:** Added toggles for generating `.srt`, `.vtt` and `.lrc` (Karaoke) files.

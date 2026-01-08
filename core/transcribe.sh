@@ -36,6 +36,7 @@ fi
 
 INPUT_PATH=""
 MODEL_NAME="small"
+GENERATE_TXT=true
 GENERATE_SUBS=false
 GENERATE_LRC=false
 USE_SYS_PICKER=false
@@ -53,14 +54,16 @@ show_usage() {
     echo "Options:"
     echo -e "  -h, --help          Show this help message"
     echo -e "  --model, -m [name]  Choose model (tiny, base, small, medium, large)"
+    echo -e "  --txt               Generate text transcript (default)"
+    echo -e "  --no-txt            Disable text transcript"
     echo -e "  --subs              Generate .srt and .vtt subtitles"
-    echo -e "  --no-subs           Disable subtitle generation (overrides config)"
+    echo -e "  --no-subs           Disable subtitle generation"
     echo -e "  --lrc               Generate .lrc lyrics"
-    echo -e "  --no-lrc            Disable lyrics generation (overrides config)"
+    echo -e "  --no-lrc            Disable lyrics generation"
     echo -e "  --file-picker       Launch Android System File Picker"
     echo ""
     echo -e "${YELLOW}Examples:${NC}"
-    echo -e "  whisper song.mp3 --lrc --model small"
+    echo -e "  whisper song.mp3 --lrc --no-txt"
     echo -e "  whisper video.mp4 --subs"
     echo -e "  whisper folder/ --no-subs"
     exit 0
@@ -70,6 +73,16 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     -h|--help)
       show_usage
+      ;;
+    --txt)
+      GENERATE_TXT=true
+      CLI_OVERRIDE=true
+      shift # past argument
+      ;;
+    --no-txt)
+      GENERATE_TXT=false
+      CLI_OVERRIDE=true
+      shift # past argument
       ;;
     --subs)
       GENERATE_SUBS=true
@@ -399,6 +412,17 @@ transcribe_file() {
         cmd_args+=("-l" "$DEFAULT_LANG")
     fi
 
+    # Output selection
+    if [ "$GENERATE_TXT" = false ] && [ "$GENERATE_SUBS" = false ] && [ "$GENERATE_LRC" = false ]; then
+        echo -e "${RED}[ERROR]${NC} No output format selected!"
+        echo "Please enable at least one: --txt, --subs, or --lrc"
+        return
+    fi
+
+    if [ "$GENERATE_TXT" = true ]; then
+        cmd_args+=("-otxt")
+    fi
+
     if [ "$GENERATE_SUBS" = true ]; then
         cmd_args+=("-osrt" "-ovtt")
     fi
@@ -418,7 +442,9 @@ transcribe_file() {
     # Cleanup is handled by trap
     
     echo ""
-    echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.txt"
+    if [ "$GENERATE_TXT" = true ]; then
+        echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.txt"
+    fi
     if [ "$GENERATE_SUBS" = true ]; then
         echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.srt"
         echo -e "${GREEN}[DONE]${NC} Saved: ${output_base}.vtt"
@@ -484,6 +510,10 @@ pre_flight_check() {
         
         echo -e "Model:   ${GREEN}$MODEL_NAME${NC}"
         
+        # Text Status
+        if [ "$GENERATE_TXT" = true ]; then T_STAT="${GREEN}ON${NC}"; else T_STAT="${RED}OFF${NC}"; fi
+        echo -e "Text:    $T_STAT"
+
         # Subs Status
         if [ "$GENERATE_SUBS" = true ]; then S_STAT="${GREEN}ON${NC}"; else S_STAT="${RED}OFF${NC}"; fi
         echo -e "Subs:    $S_STAT"
@@ -494,8 +524,9 @@ pre_flight_check() {
         
         echo -e "----------------------------------------"
         echo -e "[Enter]  Start Now"
-        echo -e "[S]      Toggle Subtitles"
-        echo -e "[L]      Toggle Lyrics"
+        echo -e "[T]      Toggle Text (.txt)"
+        echo -e "[S]      Toggle Subtitles (.srt/.vtt)"
+        echo -e "[L]      Toggle Lyrics (.lrc)"
         echo -e "[M]      Change Model"
         echo -e "[Q]      Cancel"
         echo ""
@@ -505,6 +536,9 @@ pre_flight_check() {
         read -t 1 -n 1 key
         if [ $? -eq 0 ]; then
             case "$key" in
+                t|T)
+                    if [ "$GENERATE_TXT" = true ]; then GENERATE_TXT=false; else GENERATE_TXT=true; fi
+                    ;;
                 s|S) 
                     if [ "$GENERATE_SUBS" = true ]; then GENERATE_SUBS=false; else GENERATE_SUBS=true; fi 
                     ;;

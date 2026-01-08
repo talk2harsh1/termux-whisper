@@ -40,6 +40,7 @@ You can also use the `whisper` command directly with arguments:
 | **Specify Model** | `whisper voice.m4a --model base` |
 | **Generate Subtitles** | `whisper movie.mkv --subs` |
 | **Generate Lyrics** | `whisper song.mp3 --lrc` |
+| **Disable Text Output** | `whisper video.mp4 --no-txt` |
 | **Batch Process** | `whisper /path/to/folder/` |
 | **Direct File Picker** | `whisper --file-picker` |
 
